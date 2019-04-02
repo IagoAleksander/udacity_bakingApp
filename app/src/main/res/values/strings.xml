@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BakingApp</string>
+
+    <string name="error_general">Something unexpected occurred. Please, try again.</string>
+
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+
+    <string name="select_recipe_header">Select a recipe:</string>
+    <string name="choose_recipe_header">Choose a Recipe</string>
+    <string name="recipe_ingredients_header">Recipe Ingredients:</string>
+    <string name="recipe_steps_header">Recipe Steps:</string>
+
+    <string name="recipe_steps_button">Recipe Steps</string>
+    <string name="recipe_ingredients_button">Recipe Ingredients</string>
+</resources>
