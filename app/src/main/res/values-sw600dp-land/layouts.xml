@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="main_layout" type="layout">@layout/activity_main</item>
-    <integer name="columns_number">3</integer>
-    <bool name="is_tablet">true</bool>
+<item name="main_layout" type="layout">@layout/activity_main</item>
+<integer name="columns_number">3</integer>
+<bool name="is_tablet">true</bool>
 </resources>

@@ -32,6 +32,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             recipe = savedInstanceState.getParcelable(Constants.RECIPE_BUNDLE);
+            videoPositionHash = (HashMap<String, Long>) savedInstanceState.getSerializable(Constants.VIDEO_STATE);
         } else if (getIntent().getExtras() != null) {
             recipe = getIntent().getParcelableExtra(Constants.RECIPE_BUNDLE);
         }
@@ -67,5 +68,13 @@ public class RecipeActivity extends AppCompatActivity {
         intent.putExtra(Constants.RECIPE_BUNDLE, recipe);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(Constants.RECIPE_BUNDLE, recipe);
+        outState.putSerializable(Constants.VIDEO_STATE, videoPositionHash);
     }
 }
