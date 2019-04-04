@@ -11,6 +11,7 @@ import com.iaz.bakingapp.presentation.ui.fragments.StepDetailsFragment;
 import com.iaz.bakingapp.util.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -26,6 +27,8 @@ public class StepDetailsActivity extends AppCompatActivity {
     private ActivityStepDetailsBinding binding;
     private int mCurrentPosition = 0;
 
+    public HashMap<String, Long> videoPositionHash = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             stepsList = savedInstanceState.getParcelableArrayList(Constants.STEPS_ARRAY);
+            videoPositionHash = (HashMap<String, Long>) savedInstanceState.getSerializable(Constants.VIDEO_STATE);
             position = savedInstanceState.getInt(Constants.STEP_ID, 0);
             mCurrentPosition = position;
         } else if (getIntent().getExtras() != null) {
@@ -115,6 +119,7 @@ public class StepDetailsActivity extends AppCompatActivity {
 
         outState.putParcelableArrayList(Constants.STEPS_ARRAY, stepsList);
         outState.putInt(Constants.STEP_ID, position);
+        outState.putSerializable(Constants.VIDEO_STATE, videoPositionHash);
     }
 
 }

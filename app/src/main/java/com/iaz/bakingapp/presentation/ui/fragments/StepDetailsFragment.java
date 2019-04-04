@@ -24,6 +24,8 @@ import com.google.android.exoplayer2.util.Util;
 import com.iaz.bakingapp.R;
 import com.iaz.bakingapp.databinding.FragmentStepDetailsBinding;
 import com.iaz.bakingapp.models.Step;
+import com.iaz.bakingapp.presentation.ui.activities.RecipeActivity;
+import com.iaz.bakingapp.presentation.ui.activities.StepDetailsActivity;
 import com.iaz.bakingapp.util.Constants;
 
 public class StepDetailsFragment extends Fragment {
@@ -107,11 +109,30 @@ public class StepDetailsFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
 
+            getVideoPosition();
+
             if (videoPosition != C.TIME_UNSET) {
                 mExoPlayer.seekTo(videoPosition);
             }
 
             mExoPlayer.prepare(mediaSource);
+        }
+    }
+
+    private void getVideoPosition() {
+
+        Long videoPositionTemp;
+
+        if (getActivity() instanceof RecipeActivity) {
+            videoPositionTemp = ((RecipeActivity) getActivity()).videoPositionHash.get(step.getId());
+            if (videoPositionTemp != null) {
+                videoPosition = videoPositionTemp;
+            }
+        } else if (getActivity() instanceof StepDetailsActivity) {
+            videoPositionTemp = ((StepDetailsActivity) getActivity()).videoPositionHash.get(step.getId());
+            if (videoPositionTemp != null) {
+                videoPosition = videoPositionTemp;
+            }
         }
     }
 
@@ -124,14 +145,30 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-
-        if (mExoPlayer != null)
+        if (Util.SDK_INT <= 23 && mExoPlayer != null) {
+            savePlayerState();
             releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23 && mExoPlayer != null) {
+            savePlayerState();
+            releasePlayer();
+        }
     }
 
     private void savePlayerState() {
         if (mExoPlayer != null) {
             videoPosition = mExoPlayer.getCurrentPosition();
+
+            if (getActivity() instanceof RecipeActivity) {
+                ((RecipeActivity) getActivity()).videoPositionHash.put(step.getId(), videoPosition);
+            } else if (getActivity() instanceof StepDetailsActivity) {
+                ((StepDetailsActivity) getActivity()).videoPositionHash.put(step.getId(), videoPosition);
+            }
         }
     }
 
@@ -152,6 +189,22 @@ public class StepDetailsFragment extends Fragment {
      */
     public void gainVisibility() {
         initializePlayer();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            initializePlayer();
+        }
     }
 
 }

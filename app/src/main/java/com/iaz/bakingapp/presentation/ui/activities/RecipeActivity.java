@@ -17,11 +17,13 @@ import com.iaz.bakingapp.util.Constants;
 import com.iaz.bakingapp.widget.BakingWidgetProvider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecipeActivity extends AppCompatActivity {
 
     private Recipe recipe;
     public FragmentManager fragmentManager;
+    public HashMap<String, Long> videoPositionHash = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
